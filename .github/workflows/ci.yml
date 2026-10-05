@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -25,3 +26,19 @@ jobs:
           swift --version
       - name: Build
         run: swift build
+
+  generated-code:
+    runs-on: [self-hosted, macOS, macstudio]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: nomasystems/action-xcode-select@v0.2
+      - name: Regenerate from the current upstream spec
+        run: ./generate.sh --refresh
+      - name: Fail if the committed sources differ
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "::error::Generated sources are out of date. Run ./generate.sh --refresh and commit the result."
+            git status --short
+            git diff --stat
+            exit 1
+          fi

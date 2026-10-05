@@ -79,8 +79,10 @@ The published specification is not accurate in a few places, and some behaviour 
 
 ## Continuous integration
 
-- `CI` builds the package on every pull request and on pushes to `main`.
-- `Generated code` runs `./generate.sh --refresh` and fails if the committed sources differ. It runs on pull requests that touch the spec patch, the generator script, the package manifest or the sources, and every Monday, so that a change in Flowbox's published spec is noticed.
+The `CI` workflow runs on pull requests, on pushes to `main` and on demand from the Actions tab:
+
+- `build`: `swift build`.
+- `generated-code`: runs `./generate.sh --refresh` and fails if the committed sources differ, so it also fails if Flowbox changes its published spec until the sources are regenerated and committed.
 
 ## License
 
