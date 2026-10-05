@@ -1,0 +1,10 @@
+generate:
+  - types
+  - client
+accessModifier: public
+filter:
+  operations:
+    - GetPostsByFlowKey
+    - GetProductByProductkey
+    - ReportPostsByFlowKey
+    - EventTracking
