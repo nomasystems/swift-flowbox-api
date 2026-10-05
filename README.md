@@ -77,6 +77,11 @@ The published specification is not accurate in a few places, and some behaviour 
 - The first run builds `swift-openapi-generator` at a pinned version into `.build/`.
 - The upstream spec (`Spec/upstream-openapi.json`) and the patched one (`Spec/openapi.json`) are **not committed**: they are Flowbox's content. The generated sources are committed and must not be edited by hand.
 
+## Continuous integration
+
+- `CI` builds the package on every pull request and on pushes to `main`.
+- `Generated code` runs `./generate.sh --refresh` and fails if the committed sources differ. It runs on pull requests that touch the spec patch, the generator script, the package manifest or the sources, and every Monday, so that a change in Flowbox's published spec is noticed.
+
 ## License
 
 To be decided.
