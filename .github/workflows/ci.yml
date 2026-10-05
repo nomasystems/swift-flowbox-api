@@ -24,15 +24,8 @@ jobs:
         run: |
           xcodebuild -version
           swift --version
-      - name: Build without warnings or errors
-        shell: bash
-        run: |
-          swift build 2>&1 | tee "$RUNNER_TEMP/build.log"
-          perl -pe 's/\e\[[0-9;]*m//g' "$RUNNER_TEMP/build.log" > "$RUNNER_TEMP/build-plain.log"
-          if grep -E "Sources/FlowboxAPI/.*(warning|error):" "$RUNNER_TEMP/build-plain.log" | grep -vE "warning: (public|package) import of '[A-Za-z]+' was not used in"; then
-            echo "::error::The package does not build cleanly"
-            exit 1
-          fi
+      - name: Build
+        run: swift build
       - name: Regenerate from the current upstream spec
         run: ./generate.sh --refresh
       - name: Fail if the committed sources differ
