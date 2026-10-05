@@ -36,8 +36,6 @@ rm -rf "${output}"
 mkdir -p "${output}"
 "${binary}" generate Spec/openapi.json --config Spec/openapi-generator-config.yaml --output-directory "${output}"
 
-perl -pi -e 's/\bpublic import /import /' "${output}"/*.swift
-
 cat > "${output}/Exports.swift" <<'SWIFT'
 @_exported import OpenAPIRuntime
 @_exported import OpenAPIURLSession

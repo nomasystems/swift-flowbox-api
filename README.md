@@ -75,14 +75,14 @@ The published specification is not accurate in a few places, and some behaviour 
 - `Spec/patch-openapi.py` applies the corrections to the upstream spec: `cursor` becomes an integer (response and request) and `api-key` becomes a `securityScheme` instead of a parameter on every operation. It fails loudly if the upstream shape changes.
 - `Spec/openapi-generator-config.yaml` selects the operations to generate.
 - The first run builds `swift-openapi-generator` at a pinned version into `.build/`.
-- After generating, `generate.sh` rewrites `public import` to `import` in the generated files: the generator emits public imports that the compiler reports as unused (`UnusedImportAccess`) for every file, and the package builds in Swift 5 language mode where this changes nothing.
+- The generated sources are the generator's raw output. The generator (1.13.1) emits `public import` lines that the compiler reports as unused in some files (`UnusedImportAccess`); this is a known issue upstream ([swift-openapi-generator#946](https://github.com/apple/swift-openapi-generator/issues/946)) and the CI check ignores that one kind of warning.
 - The upstream spec (`Spec/upstream-openapi.json`) and the patched one (`Spec/openapi.json`) are **not committed**: they are Flowbox's content. The generated sources are committed and must not be edited by hand.
 
 ## Continuous integration
 
 The `CI` workflow runs on pull requests, on pushes to `main` and on demand from the Actions tab. In one job it:
 
-1. builds the package, failing on any warning or error in `Sources/FlowboxAPI`;
+1. builds the package, failing on any warning or error in `Sources/FlowboxAPI` except the known `UnusedImportAccess` warnings of the generator;
 2. regenerates the sources from the current upstream spec (`./generate.sh --refresh`) and fails if they differ from the committed ones.
 
 To update the client (for example when Flowbox changes its API): run `./generate.sh --refresh` locally, check that `swift build` is clean, commit the result and open a pull request; the workflow confirms that the committed sources are exactly what the generator produces. If Flowbox changes its spec, any later pull request fails the second step until the sources are regenerated.

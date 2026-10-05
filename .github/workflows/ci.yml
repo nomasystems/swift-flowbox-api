@@ -28,7 +28,7 @@ jobs:
         shell: bash
         run: |
           swift build 2>&1 | tee build.log
-          if grep -E "Sources/FlowboxAPI/.*(warning|error):" build.log; then
+          if grep -E "Sources/FlowboxAPI/.*(warning|error):" build.log | grep -vE "warning: (public|package) import of '[A-Za-z]+' was not used in"; then
             echo "::error::The package does not build cleanly"
             exit 1
           fi
