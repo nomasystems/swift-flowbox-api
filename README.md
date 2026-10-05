@@ -75,14 +75,14 @@ The published specification is not accurate in a few places, and some behaviour 
 - `Spec/patch-openapi.py` applies the corrections to the upstream spec: `cursor` becomes an integer (response and request) and `api-key` becomes a `securityScheme` instead of a parameter on every operation. It fails loudly if the upstream shape changes.
 - `Spec/openapi-generator-config.yaml` selects the operations to generate.
 - The first run builds `swift-openapi-generator` at a pinned version into `.build/`.
+- After generating, `generate.sh` rewrites `public import` to `import` in the generated files: the generator emits public imports that the compiler reports as unused (`UnusedImportAccess`) for every file, and the package builds in Swift 5 language mode where this changes nothing.
 - The upstream spec (`Spec/upstream-openapi.json`) and the patched one (`Spec/openapi.json`) are **not committed**: they are Flowbox's content. The generated sources are committed and must not be edited by hand.
 
 ## Continuous integration
 
-The `CI` workflow runs on pull requests, on pushes to `main` and on demand from the Actions tab:
+The `CI` workflow runs on pull requests, on pushes to `main` and on demand from the Actions tab. It regenerates the sources from the current upstream spec (`./generate.sh --refresh`) and builds the package, failing on any warning or error in `Sources/FlowboxAPI`. If Flowbox changes its published spec in a way that stops the generated code from building, this is where it shows up.
 
-- `build`: `swift build`.
-- `generated-code`: runs `./generate.sh --refresh` and fails if the committed sources differ, so it also fails if Flowbox changes its published spec until the sources are regenerated and committed.
+When the spec changes, regenerate locally with `./generate.sh --refresh`, check that `swift build` is clean and open a pull request with the result.
 
 ## License
 

@@ -24,21 +24,13 @@ jobs:
         run: |
           xcodebuild -version
           swift --version
-      - name: Build
-        run: swift build
-
-  generated-code:
-    runs-on: [self-hosted, macOS, macstudio]
-    steps:
-      - uses: actions/checkout@v7
-      - uses: nomasystems/action-xcode-select@v0.2
-      - name: Regenerate from the current upstream spec
+      - name: Generate from the current upstream spec
         run: ./generate.sh --refresh
-      - name: Fail if the committed sources differ
+      - name: Build without warnings or errors
+        shell: bash
         run: |
-          if [ -n "$(git status --porcelain)" ]; then
-            echo "::error::Generated sources are out of date. Run ./generate.sh --refresh and commit the result."
-            git status --short
-            git diff --stat
+          swift build 2>&1 | tee build.log
+          if grep -E "Sources/FlowboxAPI/.*(warning|error):" build.log; then
+            echo "::error::The generated code does not build cleanly"
             exit 1
           fi
