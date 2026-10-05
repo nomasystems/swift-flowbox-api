@@ -24,13 +24,21 @@ jobs:
         run: |
           xcodebuild -version
           swift --version
-      - name: Generate from the current upstream spec
-        run: ./generate.sh --refresh
       - name: Build without warnings or errors
         shell: bash
         run: |
           swift build 2>&1 | tee build.log
           if grep -E "Sources/FlowboxAPI/.*(warning|error):" build.log; then
-            echo "::error::The generated code does not build cleanly"
+            echo "::error::The package does not build cleanly"
+            exit 1
+          fi
+      - name: Regenerate from the current upstream spec
+        run: ./generate.sh --refresh
+      - name: Fail if the committed sources differ
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "::error::Generated sources are out of date. Run ./generate.sh --refresh and commit the result."
+            git status --short
+            git diff --stat
             exit 1
           fi

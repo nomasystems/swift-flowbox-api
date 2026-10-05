@@ -80,9 +80,12 @@ The published specification is not accurate in a few places, and some behaviour 
 
 ## Continuous integration
 
-The `CI` workflow runs on pull requests, on pushes to `main` and on demand from the Actions tab. It regenerates the sources from the current upstream spec (`./generate.sh --refresh`) and builds the package, failing on any warning or error in `Sources/FlowboxAPI`. If Flowbox changes its published spec in a way that stops the generated code from building, this is where it shows up.
+The `CI` workflow runs on pull requests, on pushes to `main` and on demand from the Actions tab. In one job it:
 
-When the spec changes, regenerate locally with `./generate.sh --refresh`, check that `swift build` is clean and open a pull request with the result.
+1. builds the package, failing on any warning or error in `Sources/FlowboxAPI`;
+2. regenerates the sources from the current upstream spec (`./generate.sh --refresh`) and fails if they differ from the committed ones.
+
+To update the client (for example when Flowbox changes its API): run `./generate.sh --refresh` locally, check that `swift build` is clean, commit the result and open a pull request; the workflow confirms that the committed sources are exactly what the generator produces. If Flowbox changes its spec, any later pull request fails the second step until the sources are regenerated.
 
 ## License
 
