@@ -16,10 +16,10 @@ permissions:
 
 jobs:
   build:
-    runs-on: [self-hosted, macOS, macstudio]
+    runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v7
-      - uses: nomasystems/action-xcode-select@v0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: nomasystems/action-xcode-select@0206818b1656e8f848594dee8c3603de16692bc2 # v0.2
       - name: Toolchain
         run: |
           xcodebuild -version
