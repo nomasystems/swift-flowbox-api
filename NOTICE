@@ -1,0 +1,19 @@
+swift-flowbox-api
+Copyright 2026 Nomasystems
+
+This product is licensed under the Apache License, Version 2.0.
+
+This is an unofficial client. It is not made, endorsed or supported by Flowbox.
+Flowbox and the Flowbox API are the property of their respective owners, and the
+licence of this package does not grant any right over them.
+
+The sources under Sources/FlowboxAPI are generated with swift-openapi-generator
+(Apache License 2.0, https://github.com/apple/swift-openapi-generator) from the
+specification that Flowbox publishes at
+https://app.swaggerhub.com/apis-docs/FlowboxAB/External-API/v2
+
+This package depends on the following Apache License 2.0 projects, which are
+fetched by Swift Package Manager and not included in this repository:
+- swift-openapi-runtime (https://github.com/apple/swift-openapi-runtime)
+- swift-openapi-urlsession (https://github.com/apple/swift-openapi-urlsession)
+- swift-http-types (https://github.com/apple/swift-http-types)

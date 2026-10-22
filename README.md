@@ -89,4 +89,4 @@ To update the client (for example when Flowbox changes its API): run `./generate
 
 ## License
 
-To be decided.
+Apache License 2.0, see [LICENSE](LICENSE) and [NOTICE](NOTICE). The licence covers this package only: it grants no right over the Flowbox API, its specification or its trademarks.
