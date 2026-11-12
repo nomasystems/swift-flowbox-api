@@ -7,7 +7,7 @@ upstream_url="https://api.swaggerhub.com/apis/FlowboxAB/External-API/v2"
 package="$(cd "$(dirname "$0")" && pwd)"
 tools="${package}/.build/generator"
 binary="${tools}/src/.build/release/swift-openapi-generator"
-output="${package}/Sources/FlowboxAPI"
+output="${package}/Sources/FlowboxAPICommunityClient"
 upstream="${package}/Spec/upstream-openapi.json"
 
 cd "${package}"
@@ -42,4 +42,4 @@ cat > "${output}/Exports.swift" <<'SWIFT'
 @_exported import HTTPTypes
 SWIFT
 
-echo "Generated sources written to Sources/FlowboxAPI"
+echo "Generated sources written to Sources/FlowboxAPICommunityClient"

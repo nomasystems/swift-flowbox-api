@@ -2,10 +2,10 @@
 import PackageDescription
 
 let package = Package(
-    name: "swift-flowbox-api",
+    name: "swift-flowbox-api-community-client",
     platforms: [.iOS(.v16), .macOS(.v13)],
     products: [
-        .library(name: "FlowboxAPI", targets: ["FlowboxAPI"])
+        .library(name: "FlowboxAPICommunityClient", targets: ["FlowboxAPICommunityClient"])
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-openapi-runtime", .upToNextMinor(from: "1.12.2")),
@@ -14,7 +14,7 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "FlowboxAPI",
+            name: "FlowboxAPICommunityClient",
             dependencies: [
                 .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
                 .product(name: "OpenAPIURLSession", package: "swift-openapi-urlsession"),
